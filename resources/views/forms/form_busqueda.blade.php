@@ -52,10 +52,16 @@
                 <span class="custom-control-span" for="customCheck1">Acentos</span>
                 </div>
             </div> --}}
-            <div class="col-sm-2 text-center" id="div_botones_1_consulta_1" @if(isset($where2)) {{'hidden'}} @endif>
-                <button type="submit" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Buscar"><img src="{{asset('img/lupa.png')}}" height="20"></button>&nbsp;
-                <button type="button" class="btn btn-danger" onclick="javascript:location.href='tabla?ordercol={{$ordercol_def}}&limpiar=1&database={{$database}}&schema={{$schema}}&tabla_selected={{$tabla_selected}}&sort={{$sort}}'" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Limpiar búsqueda"/><img src="{{asset('img/limpiar.png')}}" height="20"></button>&nbsp;
-                <button type="button" class="btn btn-outline-success" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Agregar segunda búsqueda" onClick="agregar_busqueda_1()">+</button>
+            <div class="col-sm-2 d-inline-block text-center" id="div_botones_1_consulta_1" @if(isset($where2)) {{'hidden'}} @endif>
+                <div class="container d-inline-block">
+                    <button type="submit" class="btn btn-primary d-inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Buscar">
+                        <img src="{{asset('img/lupa.png')}}" height="20">
+                    </button>
+                    <button type="button" class="btn btn-danger d-inline-block" onclick="javascript:location.href='tabla?ordercol={{$ordercol_def}}&limpiar=1&database={{$database}}&schema={{$schema}}&tabla_selected={{$tabla_selected}}&sort={{$sort}}'" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Limpiar búsqueda">
+                        <img src="{{asset('img/limpiar.png')}}" height="20">
+                    </button>
+                    <button type="button" class="btn btn-outline-success d-inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Agregar segunda búsqueda" onClick="agregar_busqueda_1()">+</button>
+                </div>
             </div>
             <div class="col-sm-2 text-center" id="div_botones_2_consulta_1" hidden="">
                 <button type="button" class="btn btn-outline-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Quitar segunda búsqueda" onClick="quitar_busqueda_1()">-</button>

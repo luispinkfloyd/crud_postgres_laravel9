@@ -98,7 +98,7 @@ class ExcelExport implements FromView , ShouldAutoSize , WithEvents
 
 		$charset_def = $this->request->session()->get('charset_def');
 
-		$conexion = $this->conexion($request, $database, $schema, $charset_def);
+		$conexion = $this->conexion($this->request, $database, $schema, $charset_def);
 
 		$function = 'f_limpiar_acentos_'.$db_usuario.'_'.$database.'_'.$schema;
 

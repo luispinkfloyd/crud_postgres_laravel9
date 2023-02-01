@@ -673,8 +673,33 @@ class HomeController extends Controller
 
 						$count_registros = count($registros->get());
 
-						$consulta_de_registros = $this->getSqlWithBindings($registros);
-						$consulta_de_registros = str_replace('"','',$consulta_de_registros).';';
+						if($comparador1 !== 'ilike'){
+							$consulta_de_registros = $this->getSqlWithBindings($registros);
+							$consulta_de_registros = str_replace('"','',$consulta_de_registros).';';
+						}else{
+							$consulta_de_registros = Str::replaceArray('?', $registros->getBindings(), $registros->toSql());
+							//str_replace_array('?', $registros->getBindings(), $registros->toSql()); -- str_replace_array Deprecated
+							$consulta_de_registros = str_replace('"','',$consulta_de_registros).';';
+
+							if($schema != 'public'){
+								$consulta_de_registros = str_replace($tabla_selected,$schema.'.'.$tabla_selected,$consulta_de_registros);
+							}
+						}
+
+						if(isset($comparador2)){
+							if($comparador1 !== 'ilike' || $comparador2 !== 'ilike'){
+								$consulta_de_registros = $this->getSqlWithBindings($registros);
+								$consulta_de_registros = str_replace('"','',$consulta_de_registros).';';
+							}else{
+								$consulta_de_registros = Str::replaceArray('?', $registros->getBindings(), $registros->toSql());
+								//str_replace_array('?', $registros->getBindings(), $registros->toSql()); -- str_replace_array Deprecated
+								$consulta_de_registros = str_replace('"','',$consulta_de_registros).';';
+	
+								if($schema != 'public'){
+									$consulta_de_registros = str_replace($tabla_selected,$schema.'.'.$tabla_selected,$consulta_de_registros);
+								}
+							}
+						}
 
 						if($schema != 'public'){
 							$consulta_de_registros = str_replace($tabla_selected,$schema.'.'.$tabla_selected,$consulta_de_registros);
