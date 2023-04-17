@@ -40,7 +40,7 @@
                 <div class="input-group">
                     <div class="input-group flex-row mb-2">
                         <span class="input-group-text" id="where1_span">Parámetro</span>
-                        <input type="text" name="where1" id="where1" list="where1_datalist" autocomplete="off" class="form-control rounded-end" placeholder="Parámetro de búsqueda..." @if(isset($comparador1)) @if($comparador1 == 'is_null' || $comparador1 == 'not_null') {{'disabled'}} @else {{'required'}} @endif @else {{'required'}} @endif @if(isset($where1)) {{'value='.$where1}} @endif>
+                        <input type="text" name="where1" id="where1" list="where1_datalist" autocomplete="off" class="form-control rounded-end" placeholder="Parámetro de búsqueda..." @if(isset($comparador1)) @if($comparador1 == 'is_null' || $comparador1 == 'not_null') {{'disabled'}} @else {{'required'}} @endif @else {{'required'}} @endif @if(isset($where1)) value="{{$where1}}" @endif>
                         <datalist id="where1_datalist">
                         </datalist>
                     </div>
@@ -52,16 +52,14 @@
                 <span class="custom-control-span" for="customCheck1">Acentos</span>
                 </div>
             </div> --}}
-            <div class="col-sm-2 d-inline-block text-center" id="div_botones_1_consulta_1" @if(isset($where2)) {{'hidden'}} @endif>
-                <div class="container d-inline-block">
-                    <button type="submit" class="btn btn-primary d-inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Buscar">
-                        <img src="{{asset('img/lupa.png')}}" height="20">
-                    </button>
-                    <button type="button" class="btn btn-danger d-inline-block" onclick="javascript:location.href='tabla?ordercol={{$ordercol_def}}&limpiar=1&database={{$database}}&schema={{$schema}}&tabla_selected={{$tabla_selected}}&sort={{$sort}}'" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Limpiar búsqueda">
-                        <img src="{{asset('img/limpiar.png')}}" height="20">
-                    </button>
-                    <button type="button" class="btn btn-outline-success d-inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Agregar segunda búsqueda" onClick="agregar_busqueda_1()">+</button>
-                </div>
+            <div class="col-sm-2 text-center" id="div_botones_1_consulta_1" @if(isset($where2)) {{'hidden'}} @endif>
+                <button type="submit" class="btn btn-primary d-inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Buscar">
+                    <img src="{{asset('img/lupa.png')}}" height="20">
+                </button>
+                <button type="button" class="btn btn-danger d-inline-block" onclick="javascript:location.href='tabla?ordercol={{$ordercol_def}}&limpiar=1&database={{$database}}&schema={{$schema}}&tabla_selected={{$tabla_selected}}&sort={{$sort}}'" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Limpiar búsqueda">
+                    <img src="{{asset('img/limpiar.png')}}" height="20">
+                </button>
+                <button type="button" class="btn btn-outline-success d-inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Agregar segunda búsqueda" onClick="agregar_busqueda_1()">+</button>
             </div>
             <div class="col-sm-2 text-center" id="div_botones_2_consulta_1" hidden="">
                 <button type="button" class="btn btn-outline-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Quitar segunda búsqueda" onClick="quitar_busqueda_1()">-</button>
@@ -69,7 +67,7 @@
         </div>
         {{-- Fin del form 1 --}}
         {{-- Form 2 (visible sólo cuando se selecciona o está seteado where2) --}}
-        <div class="row mt-2 ms-1 me-1-2" id="div_consulta_2" @if(!isset($where2)) {{'hidden'}} @endif>
+        <div class="row mt-2 ms-1 me-1" id="div_consulta_2" @if(!isset($where2)) {{'hidden'}} @endif>
             <div class="col-sm-3">
                 <div class="input-group flex-row mb-2">
                     <span class="input-group-text">Columna</span>
@@ -97,7 +95,7 @@
                 <div class="input-group">
                     <div class="input-group flex-row mb-2">
                         <span class="input-group-text" id="where2_span">Parámetro</span>
-                        <input type="text" name="where2" id="where2" list="where2_datalist" autocomplete="off" class="form-control rounded-end" placeholder="Parámetro de búsqueda..." @if(isset($where2)) {{'value='.$where2}} @endif>
+                        <input type="text" name="where2" id="where2" list="where2_datalist" autocomplete="off" class="form-control rounded-end" placeholder="Parámetro de búsqueda..." @if(isset($where2)) value="{{$where2}}" @endif>
                         <datalist id="where2_datalist">
                         </datalist>
                     </div>
@@ -195,13 +193,15 @@
 
 		document.getElementById("div_botones_1_consulta_1").setAttribute("hidden","true");
 
-		//document.getElementById("check_acentos_1").setAttribute("hidden","true"); //se eliminó temporalmente
+        //document.getElementById("div_botones_1_consulta_1").hidden = true;;
 
-		document.getElementById("div_botones_2_consulta_1").removeAttribute("hidden");
+        document.getElementById("div_botones_2_consulta_1").removeAttribute("hidden");
 
 		document.getElementById("columna_selected2").setAttribute("required","true");
 
 		document.getElementById("where2").setAttribute("required","true");
+
+		//document.getElementById("check_acentos_1").setAttribute("hidden","true"); //se eliminó temporalmente
 
 	}
 

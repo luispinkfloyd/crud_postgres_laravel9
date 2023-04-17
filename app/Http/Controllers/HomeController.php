@@ -586,7 +586,7 @@ class HomeController extends Controller
 								$where1 = $request->where1;
 							}
 
-							$busqueda = str_replace("´`'çÇ¨",'_',$where1);
+							$busqueda = str_replace("`'çÇ¨",'_',$where1);
 
 							if($comparador1 === 'ilike'){
 
@@ -635,7 +635,7 @@ class HomeController extends Controller
 								$where2 = $request->where2;
 							}
 
-							$busqueda2 = str_replace("´`'çÇ¨",'_',$where2);
+							$busqueda2 = str_replace("`'çÇ¨",'_',$where2);
 
 							if($comparador2 === 'ilike'){
 
@@ -864,7 +864,6 @@ class HomeController extends Controller
     {
 
 		try
-
 		{
 
 			$database = $request->database;
