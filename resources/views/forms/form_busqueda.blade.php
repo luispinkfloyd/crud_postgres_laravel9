@@ -135,9 +135,9 @@
               url: "{{ route('ajax_columna')}}",
               data: "columna="+consulta1,
               dataType: "json",
-              error: function(){
+              /*error: function(){
                     alert("error petición ajax");
-              },
+              },*/
               success: function(result){
 
                   $.each( result, function(k,v) {
@@ -172,9 +172,9 @@
               url: "{{ route('ajax_columna')}}",
               data: "columna="+consulta2,
               dataType: "json",
-              error: function(){
+              /*error: function(){
                     alert("error petición ajax");
-              },
+              },*/
               success: function(result){
 
                   $.each( result, function(k,v) {

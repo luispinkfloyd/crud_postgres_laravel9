@@ -68,7 +68,7 @@ class AjaxController extends Controller
 
     public function ajax_grupo(Request $request){
 
-		$grupo = Base::where('grupo',$request->grupo_selected)->get();
+		$grupo = Base::where('grupo',$request->grupo_selected)->orderBy('id')->get();
         if(count($grupo) >= 1){
             return $grupo;
         }else{
