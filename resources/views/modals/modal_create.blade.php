@@ -121,6 +121,23 @@
                                 @endif
                             >
                         </div>
+                        @else
+                        <div class="mb-2">
+                            <label class="form-label" for="{{$columna->column_name}}">{{$columna->column_name}} 
+                                <small>
+                                    @if($columna->required === 'NO')
+                                        {{'(Obligatorio)'}}
+                                    @else
+                                        {{'(No obligatorio)'}}
+                                    @endif
+                                </small>:
+                            </label>
+                            <input type="text" class="form-control" name="{{$columna->column_name}}"
+                                @if($columna->required === 'NO')
+                                    {{' required '}}
+                                @endif
+                            >
+                        </div>
                         @endif
                     @endforeach
                 </div>

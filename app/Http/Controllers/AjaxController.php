@@ -54,7 +54,7 @@ class AjaxController extends Controller
 
 		$columna = $request->columna;
 
-		$sql="select distinct($columna) as columna from $tabla_selected order by 1;";
+		$sql = "SELECT distinct($columna) as columna from $tabla_selected order by 1;";
 
 		$columna_valores = $conexion->select($sql);
 
@@ -68,7 +68,7 @@ class AjaxController extends Controller
 
     public function ajax_grupo(Request $request){
 
-		$grupo = Base::where('grupo',$request->grupo_selected)->orderBy('id')->get();
+		$grupo = Base::where('grupo',$request->grupo_selected)->orderBy('servidor')->get();
         if(count($grupo) >= 1){
             return $grupo;
         }else{

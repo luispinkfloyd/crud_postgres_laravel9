@@ -155,6 +155,28 @@
 							    @php($value = $registro->$nombre_columna)
                             value="{{$value}}">
                         </div>
+                        @else
+                        <div class="mb-2">
+                            <label class="form-label" for="{{$columna->column_name}}">{{$columna->column_name}}
+                                <small>
+                                    @if($columna->required === 'NO')
+                                        {{'(Obligatorio)'}}
+                                    @else
+                                        {{'(No obligatorio)'}}
+                                    @endif
+                                </small>:
+                            </label>
+                            <input type="text" class="form-control" name="{{$columna->column_name}}"
+                                @if($columna->required === 'NO')
+                                    {{' required '}}
+                                @endif
+                                @if($charset_def !== 'UTF8')
+                                    @php($value = utf8_encode($registro->$nombre_columna))
+                                @else
+                                    @php($value = $registro->$nombre_columna)
+                                @endif
+                            value="{{$value}}">
+                        </div>
                         @endif
                     @endforeach
                 </div>
