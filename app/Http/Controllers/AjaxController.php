@@ -13,22 +13,16 @@ use Auth;
 class AjaxController extends Controller
 {
     public function id(){
-		$id = Auth::id();
-		return $id;
+		return Auth::id();
 	}
 
     public function conexion($request)
     {
         $db_usuario = $request->session()->get('db_usuario');
-
         $db_host = $request->session()->get('db_host');
-
         $charset_def = $request->session()->get('charset_def');
-
 		$database = Cache::get('database'.$this->id());
-
 		$schema = Cache::get('schema'.$this->id());
-
 		Config::set('database.connections.pgsql_variable', array(
                     'driver'    => 'pgsql',
                     'host'      => $db_host,
@@ -40,28 +34,20 @@ class AjaxController extends Controller
                     'prefix'    => '',
                     'schema'    => $schema,
 					));
-
 		$conexion = DB::connection('pgsql_variable');
-
         return $conexion;
     }
     
     public function ajax_columna(Request $request){
         
         $conexion = $this->conexion($request);
-
 		$tabla_selected = Cache::get('tabla_selected'.$this->id());
-
 		$columna = $request->columna;
-
 		$sql = "SELECT distinct($columna) as columna from $tabla_selected order by 1;";
-
 		$columna_valores = $conexion->select($sql);
-
 		foreach($columna_valores as $columna_valor) {
             $columna_valores_array[] = (array) $columna_valor->columna;
         }
-
 		return response()->json($columna_valores_array);
 
 	}

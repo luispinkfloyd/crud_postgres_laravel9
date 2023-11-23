@@ -169,7 +169,27 @@
 <div class="d-flex justify-content-center">
     {{$registros->withPath('tabla')->appends(request()->except('page'))->links()}}
 </div>
-<div class="alert alert-info mt-2 mb-0 ms-auto me-auto w-50" role="alert">
-    <h1 class="display-6">Consulta</h1>
-    <p class="lead"><b>{{$consulta_de_registros}}</b></p>
+<div class="container-fluid m-auto ps-5 pe-5">
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="alert alert-info mt-2 mb-0 ms-auto me-auto" role="alert">
+                <h1 class="display-6">Consulta</h1>
+                <p class="lead"><b>{{$consulta_de_registros}}</b></p>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="alert alert-info mt-2 mb-0 ms-auto me-auto" role="alert">
+                <h1 class="display-6">Columnas</h1>
+                <p class="lead">
+                    <b>
+                        @php($i = 0)
+                        @foreach($columnas as $columna)
+                            @php($i++) 
+                            {{$columna->column_name}} @if($i < count($columnas)) {{', '}} @endif
+                        @endforeach
+                    </b>
+                </p>
+            </div>
+        </div>
+    </div>
 </div>
