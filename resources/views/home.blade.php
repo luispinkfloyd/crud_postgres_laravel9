@@ -1,5 +1,18 @@
 @extends('layouts.app')
 
+@section('style')
+    <style type="text/css">
+        .form-switch {
+            display: flex !important;
+            flex-direction: row-reverse !important;
+            justify-content: space-between !important;
+        }
+        .div-switch-vpn {
+            max-width: 300px !important;
+        }
+    </style>
+@endsection
+
 @section('content')
 
 @if(session()->get('mensaje_error'))
@@ -89,4 +102,3 @@
 @endif
 
 @endsection
-

@@ -15,6 +15,8 @@ use App\Models\Base;
 use App\Models\Grupo;
 use Illuminate\Support\Str;
 use Auth;
+use Acamposm\Ping\Ping;
+use Acamposm\Ping\PingCommandBuilder;
 
 class HomeController extends Controller
 {
@@ -99,7 +101,7 @@ class HomeController extends Controller
 		})->toArray());
 	}
 
-    public function index()
+    public function index(Request $request)
     {
         Cache::forget('database'.$this->id());
 		Cache::forget('schema'.$this->id());
@@ -137,7 +139,36 @@ class HomeController extends Controller
 
 		$grupos = Grupo::all();
 
-		return view('home',compact('grupos'));
+		$verificar_vpn = NULL;
+
+		$vpn_rectorado = 'Sin verificar';
+		$vpn_arsat = 'Sin verificar';
+
+		if(isset($request->verificar_vpn)){
+
+			$verificar_vpn = 1;
+			$ping_rectorado = '192.168.50.3'; //Base de datos guaraní grado 3.20.0
+			$ping_arsat	= '172.16.169.167'; //Base de datos guaraní unificado 3.21.3
+
+			$command_rectorado = (new PingCommandBuilder($ping_rectorado))->count(4);
+			$command_arsat = (new PingCommandBuilder($ping_arsat))->count(4);
+
+			try{
+				$resultado_rectorado_ping = (new Ping($command_rectorado))->run();
+				$vpn_rectorado = 'Conectado';
+			}catch(\Exception $e){
+				$vpn_rectorado = 'Desconectado';
+			}
+
+			try{
+				$resultado_arsat_ping = (new Ping($command_arsat))->run();
+				$vpn_arsat = 'Conectado';
+			}catch(\Exception $e){
+				$vpn_arsat = 'Desconectado';
+			}
+		}
+
+		return view('home',compact('grupos','vpn_rectorado','vpn_arsat','verificar_vpn'));
     }
 
     public function host(Request $request){
