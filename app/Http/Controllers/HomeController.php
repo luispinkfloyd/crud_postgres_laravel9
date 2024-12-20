@@ -150,8 +150,8 @@ class HomeController extends Controller
 			$ping_rectorado = '192.168.50.3'; //Base de datos guaraní grado 3.20.0
 			$ping_arsat	= '172.16.169.167'; //Base de datos guaraní unificado 3.21.3
 
-			$command_rectorado = (new PingCommandBuilder($ping_rectorado))->count(4);
-			$command_arsat = (new PingCommandBuilder($ping_arsat))->count(4);
+			$command_rectorado = (new PingCommandBuilder($ping_rectorado))->count(2)->interval(1)->ttl(128);
+			$command_arsat = (new PingCommandBuilder($ping_arsat))->count(2)->interval(1)->ttl(128);
 
 			try{
 				$resultado_rectorado_ping = (new Ping($command_rectorado))->run();
