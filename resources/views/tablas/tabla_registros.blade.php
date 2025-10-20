@@ -63,7 +63,7 @@
             <tr>
             <th scope="col"></th>
             @foreach($columnas as $columna)
-                <th scope="col">{{$columna->column_name}}
+                <th scope="col">{{$columna->column_name}}<small>@if($columna->primary_key == true) {{' (PK)'}} @else @if($columna->foreign_key == true) {{' (FK)'}} @else {{''}} @endif @endif</small>
                     <form method="get" action="{{route('tabla')}}" class="d-inline-block">
                         <input type="hidden" name="ordercol" value="{{$ordercol}}">
                         <input type="hidden" name="database" value="{{$database}}">
@@ -112,6 +112,7 @@
             </tr>
         </thead>
         <tbody>
+            @php($i_modal = 1)
         	@forelse($registros as $registro)
                 <tr>
                 @foreach($columnas as $columna)
@@ -119,7 +120,7 @@
 					@break
                 @endforeach
                 <td>
-                	<a href="#deleteModal{{str_replace('.','_',$registro->$primera_columna)}}" class="delete" data-bs-toggle="modal"><i class="material-icons text-danger" data-bs-toggle="tooltip" title="Borrar">delete</i></a>
+                	<a href="#deleteModal{{str_replace('.','_',$registro->$primera_columna)}}{{$i_modal}}" class="delete" data-bs-toggle="modal"><i class="material-icons text-danger" data-bs-toggle="tooltip" title="Borrar">delete</i></a>
                     <a href="#editModal{{str_replace('.','_',$registro->$primera_columna)}}" class="edit" data-bs-toggle="modal"><i class="material-icons text-info" data-bs-toggle="tooltip" title="Editar">edit</i></a>
                 </td>
                       @foreach($columnas as $columna)
@@ -156,6 +157,7 @@
 
                       @endforeach
                   </tr>
+                @php($i_modal++)
             @empty
 				<?php
                     $count_columnas = count($columnas)+1;

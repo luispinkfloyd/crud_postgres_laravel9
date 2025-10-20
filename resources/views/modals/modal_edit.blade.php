@@ -1,6 +1,11 @@
 @foreach($columnas as $columna)
-	@php($primera_columna = $columna->column_name)
-	@break
+    @if($columna->primary_key == true)
+        @php($primera_columna = $columna->column_name)
+        @break
+    @else
+	    @php($primera_columna = $columna->column_name)
+	    @break
+    @endif
 @endforeach
 
 @foreach($registros as $registro)
@@ -23,7 +28,7 @@
                         @if($columna->column_name === $primera_columna)
                             <div class="mb-2">
                                 <label class="form-label" for="{{$columna->column_name}}">{{$columna->column_name}}:</label>
-                                <input type="text" class="form-control" name="{{$columna->column_name}}" value="{{$registro->$nombre_columna}}" readonly>
+                                <input type="text" class="form-control" name="{{$columna->column_name}}" value="{{$registro->$nombre_columna}}" readonly disabled>
                             </div>
                         @elseif($columna->type === 'character' | $columna->type === 'character varying' | $columna->type === 'text' | $columna->type === 'char' | $columna->type === 'varchar')
                         <div class="mb-2">

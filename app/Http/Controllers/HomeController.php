@@ -523,18 +523,38 @@ class HomeController extends Controller
 
 						$where2 = NULL;
 
-						$sql="SELECT column_name
-									,is_nullable as required
-									,character_maximum_length as max_char
-									,data_type as type
-									,column_default as default
-									,case when data_type = 'integer' then data_type
-										else data_type||coalesce('('||character_maximum_length::text||')','')||coalesce('('||numeric_precision::text||','||numeric_scale::text||')','')
-									end as data_type
+						$sql="SELECT --col.*,
+									 col.column_name
+									,col.is_nullable as required
+									,col.character_maximum_length as max_char
+									,col.data_type as type
+									,col.column_default as default
+									,col.data_type||coalesce('('||col.character_maximum_length::text||')','') as data_type
+									,CASE WHEN 
+									(SELECT true FROM information_schema.table_constraints AS tc
+									JOIN information_schema.key_column_usage AS kcu  ON tc.constraint_name = kcu.constraint_name
+									AND tc.table_schema = kcu.table_schema
+									AND tc.table_name = kcu.table_name
+									WHERE tc.constraint_type = 'PRIMARY KEY'
+									AND kcu.table_schema = col.table_schema
+									AND kcu.table_name = col.table_name
+									AND kcu.column_name = col.column_name)
+									THEN true ELSE false END as primary_key
+									,CASE WHEN 
+									(SELECT true FROM information_schema.table_constraints AS tc
+									JOIN information_schema.key_column_usage AS kcu  ON tc.constraint_name = kcu.constraint_name
+									AND tc.table_schema = kcu.table_schema
+									AND tc.table_name = kcu.table_name
+									WHERE tc.constraint_type = 'FOREIGN KEY'
+									AND kcu.table_schema = col.table_schema
+									AND kcu.table_name = col.table_name
+									AND kcu.column_name = col.column_name)
+									THEN true ELSE false END as foreign_key
+									,CASE WHEN col.column_default ILIKE 'nextval%regclass)' THEN true ELSE false END as default_serial
 								from INFORMATION_SCHEMA.columns col
 							where table_name = '".$tabla_selected."'
 								and table_schema = '".$schema."'
-							order by col.ordinal_position";
+							order by col.ordinal_position;";
 
 						$columnas = $conexion->select($sql);
 
@@ -911,16 +931,38 @@ class HomeController extends Controller
 
 			$tabla_selected = $request->tabla_selected;
 
-			$sql="SELECT column_name
-						,is_nullable as required
-						,character_maximum_length as max_char
-						,data_type as type
-						,column_default as default
-						,data_type||coalesce('('||character_maximum_length::text||')','') as data_type
+			$sql="SELECT --col.*,
+						 col.column_name
+						,col.is_nullable as required
+						,col.character_maximum_length as max_char
+						,col.data_type as type
+						,col.column_default as default
+						,col.data_type||coalesce('('||col.character_maximum_length::text||')','') as data_type
+						,CASE WHEN 
+						(SELECT true FROM information_schema.table_constraints AS tc
+    					 JOIN information_schema.key_column_usage AS kcu  ON tc.constraint_name = kcu.constraint_name
+						 AND tc.table_schema = kcu.table_schema
+						 AND tc.table_name = kcu.table_name
+    					 WHERE tc.constraint_type = 'PRIMARY KEY'
+						 AND kcu.table_schema = col.table_schema
+						 AND kcu.table_name = col.table_name
+						 AND kcu.column_name = col.column_name)
+						THEN true ELSE false END as primary_key
+						,CASE WHEN 
+						(SELECT true FROM information_schema.table_constraints AS tc
+    					 JOIN information_schema.key_column_usage AS kcu  ON tc.constraint_name = kcu.constraint_name
+						 AND tc.table_schema = kcu.table_schema
+						 AND tc.table_name = kcu.table_name
+    					 WHERE tc.constraint_type = 'FOREIGN KEY'
+						 AND kcu.table_schema = col.table_schema
+						 AND kcu.table_name = col.table_name
+						 AND kcu.column_name = col.column_name)
+						THEN true ELSE false END as foreign_key
+						,CASE WHEN col.column_default ILIKE 'nextval%regclass)' THEN true ELSE false END as default_serial
 					from INFORMATION_SCHEMA.columns col
 				   where table_name = '".$tabla_selected."'
 					 and table_schema = '".$schema."'
-				order by col.ordinal_position";
+				order by col.ordinal_position;";
 
 			$columnas = $conexion->select($sql);
 
@@ -934,27 +976,35 @@ class HomeController extends Controller
 
 				$columna_registro = $columna->column_name;
 
-				if($request->$columna_registro === NULL){
+				if($columna->default_serial === true && $columna->primary_key === true){
 
-					$insert = $insert.'NULL,';
+					$insert = $insert.'default,';
 
 				}else{
 
-					if($columna->type === 'timestamp without time zone'){
+					if($request->$columna_registro === NULL){
 
-						$timestamp_without_time_zone = date('Y-m-d H:i:s', strtotime($request->$columna_registro));
-
-						$insert = $insert."'".$timestamp_without_time_zone."',";
+						$insert = $insert.'NULL,';
 
 					}else{
 
-						if($charset_def !== 'UTF8'){
+						if($columna->type === 'timestamp without time zone'){
 
-							$insert = $insert."'".utf8_decode($request->$columna_registro)."',";
+							$timestamp_without_time_zone = date('Y-m-d H:i:s', strtotime($request->$columna_registro));
+
+							$insert = $insert."'".$timestamp_without_time_zone."',";
 
 						}else{
 
-							$insert = $insert."'".$request->$columna_registro."',";
+							if($charset_def !== 'UTF8'){
+
+								$insert = $insert."'".utf8_decode($request->$columna_registro)."',";
+
+							}else{
+
+								$insert = $insert."'".$request->$columna_registro."',";
+
+							}
 
 						}
 
@@ -990,7 +1040,6 @@ class HomeController extends Controller
 
 		try
 		{
-
 			$database = $request->database;
 
 			$schema = $request->schema;
@@ -1025,7 +1074,79 @@ class HomeController extends Controller
 
 			}else{
 
-				return back()->withInput()->with('registro_no_modificado', 'No se puede borrar el registro de la tabla '.$tabla_selected.' porque hay valores repetidos en la columna '.$primera_columna.' usada como primary key por la aplicación.');
+				$sql="SELECT --col.*,
+						 col.column_name
+						,col.is_nullable as required
+						,col.character_maximum_length as max_char
+						,col.data_type as type
+						,col.column_default as default
+						,col.data_type||coalesce('('||col.character_maximum_length::text||')','') as data_type
+						,CASE WHEN 
+						(SELECT true FROM information_schema.table_constraints AS tc
+    					 JOIN information_schema.key_column_usage AS kcu  ON tc.constraint_name = kcu.constraint_name
+						 AND tc.table_schema = kcu.table_schema
+						 AND tc.table_name = kcu.table_name
+    					 WHERE tc.constraint_type = 'PRIMARY KEY'
+						 AND kcu.table_schema = col.table_schema
+						 AND kcu.table_name = col.table_name
+						 AND kcu.column_name = col.column_name)
+						THEN true ELSE false END as primary_key
+						,CASE WHEN 
+						(SELECT true FROM information_schema.table_constraints AS tc
+    					 JOIN information_schema.key_column_usage AS kcu  ON tc.constraint_name = kcu.constraint_name
+						 AND tc.table_schema = kcu.table_schema
+						 AND tc.table_name = kcu.table_name
+    					 WHERE tc.constraint_type = 'FOREIGN KEY'
+						 AND kcu.table_schema = col.table_schema
+						 AND kcu.table_name = col.table_name
+						 AND kcu.column_name = col.column_name)
+						THEN true ELSE false END as foreign_key
+						,CASE WHEN col.column_default ILIKE 'nextval%regclass)' THEN true ELSE false END as default_serial
+					from INFORMATION_SCHEMA.columns col
+				   where table_name = '".$tabla_selected."'
+					 and table_schema = '".$schema."'
+				order by col.ordinal_position;";
+
+				$columnas = $conexion->select($sql);
+
+				foreach($columnas as $columna){
+					$columnas_array[] = $columna->column_name;
+				}
+
+				$columnas_string = implode(", ", $columnas_array);
+
+				$sql_valores_repetidos_toda_la_fila = "SELECT $columnas_string
+												  FROM $tabla_selected
+												  GROUP BY $columnas_string
+												  HAVING (COUNT(*) > 1)";
+
+				$valores_repetidos_toda_la_fila = $conexion->select($sql_valores_repetidos_toda_la_fila);
+
+				if(count($valores_repetidos_toda_la_fila) === 0){
+
+					$where_value = json_decode($request->where_val, true);
+					//print_r($where_value);exit; //Array ( [0] => Array ( [columna] => campo_x [valor] => 1 ) [1] => Array ( [columna] => campo_y [valor] => valor_a ) [2] => Array ( [columna] => campo_z [valor] => 2024-01-01 ) )
+
+					$where = '';
+					
+					foreach($where_value as $key => $value){
+						$columna = $value['columna'];
+						$valor = $value['valor'];
+						$where = $where.' AND '.$columna."::text = '".$valor."'";
+						//$request->session()->put('where_delete_'.$key, ['columna' => $columna, 'valor' => $valor]);
+					}
+
+					$delete = 'delete from '.$tabla_selected.' where '.$primera_columna."::text = '".$id."'".$where.';';
+
+					//echo $delete; exit;
+
+					$conexion->delete($delete);
+
+					return back()->withInput()->with('registro_eliminado', 'El registro se eliminó correctamente');
+
+				}
+
+				return back()->withInput()->with('registro_no_modificado', 'No se puede borrar el registro de la tabla '.$tabla_selected.' porque hay valores repetidos.');
 
 			}
 
@@ -1059,16 +1180,38 @@ class HomeController extends Controller
 
 			$tabla_selected = $request->tabla_selected;
 
-			$sql="SELECT column_name
-						,is_nullable as required
-						,character_maximum_length as max_char
-						,data_type as type
-						,column_default as default
-						,data_type||coalesce('('||character_maximum_length::text||')','') as data_type
+			$sql="SELECT --col.*,
+						 col.column_name
+						,col.is_nullable as required
+						,col.character_maximum_length as max_char
+						,col.data_type as type
+						,col.column_default as default
+						,col.data_type||coalesce('('||col.character_maximum_length::text||')','') as data_type
+						,CASE WHEN 
+						(SELECT true FROM information_schema.table_constraints AS tc
+						JOIN information_schema.key_column_usage AS kcu  ON tc.constraint_name = kcu.constraint_name
+						AND tc.table_schema = kcu.table_schema
+						AND tc.table_name = kcu.table_name
+						WHERE tc.constraint_type = 'PRIMARY KEY'
+						AND kcu.table_schema = col.table_schema
+						AND kcu.table_name = col.table_name
+						AND kcu.column_name = col.column_name)
+						THEN true ELSE false END as primary_key
+						,CASE WHEN 
+						(SELECT true FROM information_schema.table_constraints AS tc
+						JOIN information_schema.key_column_usage AS kcu  ON tc.constraint_name = kcu.constraint_name
+						AND tc.table_schema = kcu.table_schema
+						AND tc.table_name = kcu.table_name
+						WHERE tc.constraint_type = 'FOREIGN KEY'
+						AND kcu.table_schema = col.table_schema
+						AND kcu.table_name = col.table_name
+						AND kcu.column_name = col.column_name)
+						THEN true ELSE false END as foreign_key
+						,CASE WHEN col.column_default ILIKE 'nextval%regclass)' THEN true ELSE false END as default_serial
 					from INFORMATION_SCHEMA.columns col
-				   where table_name = '".$tabla_selected."'
-					 and table_schema = '".$schema."'
-				order by col.ordinal_position";
+				where table_name = '".$tabla_selected."'
+					and table_schema = '".$schema."'
+				order by col.ordinal_position;";
 
 			$columnas = $conexion->select($sql);
 

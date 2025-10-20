@@ -16,128 +16,172 @@
                             <div class="mb-2">
                                 <label class="form-label" for="{{$columna->column_name}}">{{$columna->column_name}} 
                                     <small>
-                                        @if($columna->required === 'NO')
+                                        @if($columna->required === 'NO' && $columna->primary_key == false)
                                             {{'(Obligatorio)'}}
+                                        @elseif($columna->primary_key == true && $columna->default_serial == true)
+                                            {{'(Por defecto)'}}
                                         @else
                                             {{'(No obligatorio)'}}
                                         @endif
                                     </small>:
                                 </label>
                                 <input type="text" class="form-control" name="{{$columna->column_name}}"
-									@if($columna->required === 'NO')
-                                        {{' required '}}
+									@if($columna->primary_key == true AND $columna->default_serial == true)
+                                        {{' disabled '}}
+                                    @else
+                                        @if($columna->required === 'NO')
+                                            {{' required '}}
+                                        @endif
+                                        @isset($columna->max_char)
+                                            {{' maxlength="'.$columna->max_char.'" '}}
+                                        @endisset
+                                        placeholder="texto..."
                                     @endif
-                                    @isset($columna->max_char)
-                                        {{' maxlength="'.$columna->max_char.'" '}}
-                                    @endisset
-                                placeholder="texto...">
+                                >
                             </div>
                         @elseif($columna->type === 'int' | $columna->type === 'integer' | $columna->type === 'smallint' or $columna->type === 'bigint' | $columna->type === 'numeric')
-                        <div class="mb-2">
-                            <label class="form-label" for="{{$columna->column_name}}">{{$columna->column_name}} 
-                                <small>
-                                    @if($columna->required === 'NO')
-                                        {{'(Obligatorio)'}}
+                            <div class="mb-2">
+                                <label class="form-label" for="{{$columna->column_name}}">{{$columna->column_name}} 
+                                    <small>
+                                        @if($columna->required === 'NO' && $columna->primary_key == false)
+                                            {{'(Obligatorio)'}}
+                                        @elseif($columna->primary_key == true && $columna->default_serial == true)
+                                            {{'(Por defecto)'}}
+                                        @else
+                                            {{'(No obligatorio)'}}
+                                        @endif
+                                    </small>:
+                                </label>
+                                <input type="number" class="form-control" name="{{$columna->column_name}}"
+                                    @if($columna->primary_key == true AND $columna->default_serial == true)
+                                        {{' disabled '}}
                                     @else
-                                        {{'(No obligatorio)'}}
+                                        @if($columna->required === 'NO')
+                                            {{' required '}}
+                                        @endif
+                                        placeholder="número..."
                                     @endif
-                                </small>:
-                            </label>
-                            <input type="number" class="form-control" name="{{$columna->column_name}}"
-								@if($columna->required === 'NO')
-                                    {{' required '}}
-                                @endif
-                            placeholder="número...">
-                        </div>
+                                >
+                            </div>
                         @elseif($columna->type === 'date')
-                        <div class="mb-2">
-                            <label class="form-label" for="{{$columna->column_name}}">{{$columna->column_name}} 
-                                <small>
-                                    @if($columna->required === 'NO')
-                                        {{'(Obligatorio)'}}
+                            <div class="mb-2">
+                                <label class="form-label" for="{{$columna->column_name}}">{{$columna->column_name}} 
+                                    <small>
+                                        @if($columna->required === 'NO' && $columna->primary_key == false)
+                                            {{'(Obligatorio)'}}
+                                        @elseif($columna->primary_key == true && $columna->default_serial == true)
+                                            {{'(Por defecto)'}}
+                                        @else
+                                            {{'(No obligatorio)'}}
+                                        @endif
+                                    </small>:
+                                </label>
+                                <input type="date" class="form-control" name="{{$columna->column_name}}"
+                                    @if($columna->primary_key == true AND $columna->default_serial == true)
+                                        {{' disabled '}}
                                     @else
-                                        {{'(No obligatorio)'}}
+                                        @if($columna->required === 'NO')
+                                            {{' required '}}
+                                        @endif
                                     @endif
-                                </small>:
-                            </label>
-                            <input type="date" class="form-control" name="{{$columna->column_name}}"
-                                @if($columna->required === 'NO')
-                                    {{' required '}}
-                                @endif
-                            >
-                        </div>
+                                >
+                            </div>
                         @elseif($columna->type === 'timestamp without time zone' or $columna->type === 'timestamp with time zone')
-                        <div class="mb-2">
-                            <label class="form-label" for="{{$columna->column_name}}">{{$columna->column_name}} 
-                                <small>
-                                    @if($columna->required === 'NO')
-                                        {{'(Obligatorio)'}}
+                            <div class="mb-2">
+                                <label class="form-label" for="{{$columna->column_name}}">{{$columna->column_name}} 
+                                    <small>
+                                        @if($columna->required === 'NO' && $columna->primary_key == false)
+                                            {{'(Obligatorio)'}}
+                                        @elseif($columna->primary_key == true && $columna->default_serial == true)
+                                            {{'(Por defecto)'}}
+                                        @else
+                                            {{'(No obligatorio)'}}
+                                        @endif
+                                    </small>:
+                                </label>
+                                <input type="datetime-local" class="form-control" name="{{$columna->column_name}}"
+                                    @if($columna->primary_key == true AND $columna->default_serial == true)
+                                        {{' disabled '}}
                                     @else
-                                        {{'(No obligatorio)'}}
+                                        @if($columna->required === 'NO')
+                                            {{' required '}}
+                                        @endif
                                     @endif
-                                </small>:
-                            </label>
-                            <input type="datetime-local" class="form-control" name="{{$columna->column_name}}"
-                                @if($columna->required === 'NO')
-                                    {{' required '}}
-                                @endif
-                            >
-                        </div>
+                                >
+                            </div>
                         @elseif($columna->type === 'boolean')
-                        <div class="mb-2">
-                            <label class="form-label" for="{{$columna->column_name}}">{{$columna->column_name}} 
-                                <small>
-                                    @if($columna->required === 'NO')
-                                        {{'(Obligatorio)'}}
+                            <div class="mb-2">
+                                <label class="form-label" for="{{$columna->column_name}}">{{$columna->column_name}} 
+                                    <small>
+                                        @if($columna->required === 'NO' && $columna->primary_key == false)
+                                            {{'(Obligatorio)'}}
+                                        @elseif($columna->primary_key == true && $columna->default_serial == true)
+                                            {{'(Por defecto)'}}
+                                        @else
+                                            {{'(No obligatorio)'}}
+                                        @endif
+                                    </small>:
+                                </label>
+                                <select class="form-select" name="{{$columna->column_name}}"
+                                    @if($columna->primary_key == true AND $columna->default_serial == true)
+                                        {{' disabled '}}
                                     @else
-                                        {{'(No obligatorio)'}}
+                                        @if($columna->required === 'NO')
+                                            {{' required '}}
+                                        @endif
                                     @endif
-                                </small>:
-                            </label>
-                            <select class="form-select" name="{{$columna->column_name}}"
-								@if($columna->required === 'NO')
-                                    {{' required '}}
-                                @endif
-                            >
-                                <option disabled selected value>--Seleccione--</option>
-                                <option>true</option>
-                                <option>false</option>
-                            </select>
-                        </div>
+                                >
+                                    <option disabled selected value>--Seleccione--</option>
+                                    <option>true</option>
+                                    <option>false</option>
+                                </select>
+                            </div>
                         @elseif($columna->type === 'time without time zone')
-                        <div class="mb-2">
-                            <label class="form-label" for="{{$columna->column_name}}">{{$columna->column_name}} 
-                                <small>
-                                    @if($columna->required === 'NO')
-                                        {{'(Obligatorio)'}}
+                            <div class="mb-2">
+                                <label class="form-label" for="{{$columna->column_name}}">{{$columna->column_name}} 
+                                    <small>
+                                        @if($columna->required === 'NO' && $columna->primary_key == false)
+                                            {{'(Obligatorio)'}}
+                                        @elseif($columna->primary_key == true && $columna->default_serial == true)
+                                            {{'(Por defecto)'}}
+                                        @else
+                                            {{'(No obligatorio)'}}
+                                        @endif
+                                    </small>:
+                                </label>
+                                <input type="time" class="form-control" name="{{$columna->column_name}}"
+                                    @if($columna->primary_key == true AND $columna->default_serial == true)
+                                        {{' disabled '}}
                                     @else
-                                        {{'(No obligatorio)'}}
+                                        @if($columna->required === 'NO')
+                                            {{' required '}}
+                                        @endif
                                     @endif
-                                </small>:
-                            </label>
-                            <input type="time" class="form-control" name="{{$columna->column_name}}"
-                                @if($columna->required === 'NO')
-                                    {{' required '}}
-                                @endif
-                            >
-                        </div>
+                                >
+                            </div>
                         @else
-                        <div class="mb-2">
-                            <label class="form-label" for="{{$columna->column_name}}">{{$columna->column_name}} 
-                                <small>
-                                    @if($columna->required === 'NO')
-                                        {{'(Obligatorio)'}}
+                            <div class="mb-2">
+                                <label class="form-label" for="{{$columna->column_name}}">{{$columna->column_name}} 
+                                    <small>
+                                        @if($columna->required === 'NO' && $columna->primary_key == false)
+                                            {{'(Obligatorio)'}}
+                                        @elseif($columna->primary_key == true && $columna->default_serial == true)
+                                            {{'(Por defecto)'}}
+                                        @else
+                                            {{'(No obligatorio)'}}
+                                        @endif
+                                    </small>:
+                                </label>
+                                <input type="text" class="form-control" name="{{$columna->column_name}}"
+                                    @if($columna->primary_key == true AND $columna->default_serial == true)
+                                        {{' disabled '}}
                                     @else
-                                        {{'(No obligatorio)'}}
+                                        @if($columna->required === 'NO')
+                                            {{' required '}}
+                                        @endif
                                     @endif
-                                </small>:
-                            </label>
-                            <input type="text" class="form-control" name="{{$columna->column_name}}"
-                                @if($columna->required === 'NO')
-                                    {{' required '}}
-                                @endif
-                            >
-                        </div>
+                                >
+                            </div>
                         @endif
                     @endforeach
                 </div>

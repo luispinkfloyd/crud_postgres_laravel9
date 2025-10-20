@@ -15,7 +15,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
         </div>
     @elseif(session()->get('registro_no_modificado'))
-        <div class="alert alert-success alert-dismissible text-center mt-3 mb-5 ms-auto me-auto fade show" role="alert">
+        <div class="alert alert-warning alert-dismissible text-center mt-3 mb-5 ms-auto me-auto fade show" role="alert">
           <strong>{{ session()->get('registro_no_modificado') }}</strong>
           <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
         </div>
