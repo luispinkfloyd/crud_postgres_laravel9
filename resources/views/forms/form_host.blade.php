@@ -31,21 +31,10 @@
             <div class="col-sm-12 text-center">
                 <button type="submit" class="btn btn-success mb-2 me-2">Seleccionar</button>
                 <a href="{{route('home')}}" class="btn btn-danger mb-2 me-2">Limpiar</a>
+                <a href="{{route('grupos_bases')}}" class="btn btn-primary mb-2 me-2">ABM Grupos y Bases</a>
             </div>
         </div>
     </form>
-</div>
-<div class="container mt-3 text-center">
-    <div class="row form-group">
-        <div class="col-sm">
-            <a href="#modal-form-grupos" class="btn btn-secondary mb-2 me-2" data-bs-toggle="modal" data-bs-target="#modal-form-grupos">Crear nuevo grupo</a>
-        </div>
-        <div class="col-sm">
-            <a href="#modal-form-bases" class="btn btn-primary @if(count($grupos) < 1) {{'disabled'}} @endif mb-2 me-2" data-bs-toggle="modal" data-bs-target="#modal-form-bases" @if(count($grupos) < 1) {{'aria-disabled="true"'}} @endif>Crear nuevo host</a>
-            <br>
-            <small class="small-color">(*) Solo se activa si hay creado al menos un grupo.</small>
-        </div>
-    </div>  
 </div>
 <div class="container div-switch-vpn text-center mt-3">
     <div class="row form-group">
@@ -54,37 +43,7 @@
         </div>
     </div>
 </div>
-<div class="container mt-3">
-    <div class="row form-group">
-        <div class="col-sm text-white text-end h4">
-            VPN Rectorado: 
-        </div>
-        <div class="col-sm text-start h4
-        @if($vpn_rectorado == 'Sin verificar') {{'text-warning'}} @endif
-        @if($vpn_rectorado == 'Conectado') {{'text-success'}} @endif
-        @if($vpn_rectorado == 'Desconectado') {{'text-danger'}} @endif
-        ">
-            {{$vpn_rectorado}}
-        </div>
-    </div>
-    <div class="row form-group">
-        <div class="col-sm text-white text-end h4">
-            VPN Arsat: 
-        </div>
-        <div class="col-sm text-start h4
-        @if($vpn_arsat == 'Sin verificar') {{'text-warning'}} @endif
-        @if($vpn_arsat == 'Conectado') {{'text-success'}} @endif
-        @if($vpn_arsat == 'Desconectado') {{'text-danger'}} @endif
-        ">
-            {{$vpn_arsat}}
-        </div>
-    </div>
-</div>
-@include('forms.form_grupos')
-
-@if(count($grupos) > 0)
-    @include('forms.form_bases')
-@endif
+@include('verificar_vpn')
 
 @section('script')
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>

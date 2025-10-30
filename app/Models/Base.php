@@ -18,4 +18,9 @@ class Base extends Model
         ,'password'
         ,'grupo'
     ];
+
+    public function grupo_relacion()
+    {
+        return $this->belongsTo(Grupo::class, 'grupo', 'id');
+    }
 }

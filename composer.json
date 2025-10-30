@@ -13,6 +13,7 @@
         "laravel/tinker": "^2.7",
         "laravel/ui": "^4.0",
         "maatwebsite/excel": "^3.1",
+        "mtownsend/laravel-make-trait": "^1.5",
         "psr/simple-cache": "^2.0"
     },
     "require-dev": {
