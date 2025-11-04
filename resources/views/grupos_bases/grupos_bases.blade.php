@@ -2,6 +2,7 @@
 
 @section('content')
 
+@include('grupos_bases.filtro_grupos_bases')
 @include('alerts')
 
 <div class="tabla-resultados borde-bottom mb-0">
@@ -12,7 +13,7 @@
         <div class="col-auto">
         	<a href="#modal-form-bases" class="btn btn-primary @if(count($grupos) < 1) {{'disabled'}} @endif m-2" data-bs-toggle="modal" data-bs-target="#modal-form-bases" @if(count($grupos) < 1) {{'aria-disabled="true"'}} @endif>Crear nuevo host</a>
             <br>
-            <small class="small-color">(*) Solo se activa si hay creado al menos un grupo.</small>
+            <small class="small-color ms-2">(*) Solo se activa si hay creado al menos un grupo.</small>
         </div>
         <div class="col-6 text-center">
             <h3 class="mt-1 text-white">Grupos y Hosts 
@@ -21,10 +22,10 @@
                 </small>
             </h3>
         </div>
-        <div class="col-auto text-end">
+        <div class="col-auto ms-auto">
             @if($count_datos > 0)
                 <form method="get" action="{{route('exportar_grupos_bases_excel')}}">
-                    <button type="submit" class="btn btn-success m-1">
+                    <button type="submit" class="btn btn-success m-2">
                         <img src="{{asset('img/excel.png')}}" height="20" class="float-start pe-2">
                         <span>Exportar a  Excel</span>
                     </button>
@@ -43,6 +44,8 @@
                 <th scope="col" class="text-center">IP (host)</th>
                 <th scope="col" class="text-center">Usuario</th>
                 <th scope="col" class="text-center">Contraseña</th>
+                <th scope="col" class="text-center">Red</th>
+                <th scope="col" class="text-center">Activo</th>
                 <th scope="col" class="text-center">
                     Grupo (<a href="#modal-form-edit-delete-grupos" data-bs-toggle="modal" data-bs-target="#modal-form-edit-delete-grupos" title="Editar grupos" class="edit">Editar grupos</a>)
                 </th>
@@ -51,7 +54,7 @@
         <tbody>
             @if($count_datos == 0)
                 <tr>
-                    <td colspan="7" class="text-center">No hay registros disponibles.</td>
+                    <td colspan="9" class="text-center">No hay registros disponibles.</td>
                 </tr>
             @else
                 @foreach($datos as $dato)
@@ -65,6 +68,20 @@
                         <td class="align-middle">{{$dato->host}}</td>
                         <td class="text-center align-middle">{{$dato->usuario}}</td>
                         <td class="align-middle">{{$dato->password}}</td>
+                        <td class="text-center align-middle">
+                            @if($dato->tipo_red == 'publica')
+                                Pública
+                            @elseif($dato->tipo_red == 'local')
+                                Local
+                            @endif
+                        </td>
+                        <td class="text-center align-middle">
+                            @if($dato->activo)
+                                <span class="badge bg-success">Sí</span>
+                            @else
+                                <span class="badge bg-danger">No</span>
+                            @endif
+                        </td>
                         <td class="align-middle">
                             @if($dato->grupo_relacion)
                                 {{$dato->grupo_relacion->nombre}}
@@ -85,6 +102,8 @@
 <div class="d-flex justify-content-center mt-3">
     <a href="{{route('home')}}" class="btn btn-link mb-2 me-2">Volver</a>
 </div>
+
+@include('grupos_bases.test_conexion')
 
 @include('grupos_bases.form_grupos')
 

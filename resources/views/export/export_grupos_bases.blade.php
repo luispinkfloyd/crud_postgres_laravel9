@@ -1,7 +1,7 @@
 <table>
     <thead>
     	<tr>
-            <td colspan="6">
+            <td colspan="8">
                 <p><b>Grupos y bases (hosts)</b></p>
             </td>
         </tr>
@@ -12,6 +12,8 @@
             <th style="color:#FFFFFF;background-color:#160f30;">Usuario</th>
             <th style="color:#FFFFFF;background-color:#160f30;">Contraseña</th>
             <th style="color:#FFFFFF;background-color:#160f30;">Grupo</th>
+            <th style="color:#FFFFFF;background-color:#160f30;">Red</th>
+            <th style="color:#FFFFFF;background-color:#160f30;">Activo</th>
         </tr>
     </thead>
     <tbody>
@@ -29,6 +31,12 @@
                         Sin grupo
                     @endif
                 </td>
+                <td>{{$dato->tipo_red}}</td>
+                @if($dato->activo)
+                    <td style="color: green">Sí</td>
+                @else
+                    <td style="color: red">No</td>
+                @endif
             </tr>
         @endforeach
     </tbody>

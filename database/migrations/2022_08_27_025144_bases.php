@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('host');
             $table->string('usuario');
             $table->string('password');
+            $table->string('tipo_red')->nullable();
+            $table->boolean('activo')->default(true);
             $table->integer('grupo');
             $table->timestamps();
         });

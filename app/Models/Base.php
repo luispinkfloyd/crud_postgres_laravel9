@@ -17,6 +17,8 @@ class Base extends Model
         ,'usuario'
         ,'password'
         ,'grupo'
+        ,'tipo_red'
+        ,'activo'
     ];
 
     public function grupo_relacion()

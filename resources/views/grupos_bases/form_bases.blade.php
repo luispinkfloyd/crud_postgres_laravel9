@@ -46,6 +46,26 @@
                                 <input type="text" class="form-control" aria-describedby="password_bases" id="password_bases" name="password_bases" required>
                             </div>
                         </div>
+                        <div class="col-sm">
+                            <div class="input-group mb-3">
+                                <label class="input-group-text" for="tipo_red_bases">Red <small class="small-color">(*)</small>:</label>
+                                <select class="form-select" name="tipo_red_bases" id="tipo_red_bases" required>
+                                    <option value selected disabled>--Seleccione--</option>
+                                    <option value="local">Local</option>
+                                    <option value="publica">Pública</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm">
+                            <div class="input-group mb-3">
+                                <label class="input-group-text" for="tipo_red_bases">Activo <small class="small-color">(*)</small>:</label>
+                                <select class="form-select" name="activo_bases" id="activo_bases" required>
+                                    <option value selected disabled>--Seleccione--</option>
+                                    <option value="true">Sí</option>
+                                    <option value="false">No</option>
+                                </select>
+                            </div>
+                        </div>
 					</div>
                 </div>
                 <div class="modal-footer modal-body-color">

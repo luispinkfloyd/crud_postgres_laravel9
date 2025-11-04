@@ -19,7 +19,7 @@ class BasesGruposExport implements FromView , ShouldAutoSize , WithEvents
 
 		$datos = Cache::get('datos_grupos_bases'.$id);
 
-		return view('export.grupos_bases', [
+		return view('export.export_grupos_bases', [
             'datos' => $datos
         ]);
 

@@ -53,11 +53,46 @@ trait conexionTrait
 			'charset'   => $charset_def,
 			'collation' => 'utf8_unicode_ci',
 			'prefix'    => '',
-			'schema'    => $schema,
+			'schema'    => $schema
 		));
 
 		$conexion = DB::connection('pgsql_variable');
 
 		return $conexion;
+	}
+
+	public function test_conexion($db_host = 'localhost', $db_usuario = 'postgres', $db_contrasenia = NULL, $database = 'postgres', $schema = 'public', $charset_def = 'utf8')
+	{
+		if($db_contrasenia){
+				
+			Config::set('database.connections.test_conexion', array(
+				'driver'    => 'pgsql',
+				'host'      => $db_host,
+				'database'  => $database,
+				'username'  => $db_usuario,
+				'password'  => $db_contrasenia,
+				'charset'   => $charset_def,
+				'collation' => 'utf8_unicode_ci',
+				'prefix'    => '',
+				'schema'    => $schema,
+				'options'   => array(\PDO::ATTR_TIMEOUT => 3)
+			));
+
+			try
+			{
+				DB::connection('test_conexion')->getPdo();
+
+				return 'conectado';
+			}
+			catch (\Exception $e)
+			{
+				return 'no_conectado';
+			}
+
+		}else{
+
+			return null;
+		}
+		
 	}
 }

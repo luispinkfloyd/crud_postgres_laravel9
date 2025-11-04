@@ -47,6 +47,24 @@
                                     <input type="text" class="form-control" aria-describedby="password_bases" id="password_bases" name="password_bases" value="{{$dato->password}}" required>
                                 </div>
                             </div>
+                            <div class="col-sm">
+                                <div class="input-group mb-3">
+                                    <label class="input-group-text" for="tipo_red_bases">Red <small class="small-color">(*)</small>:</label>
+                                    <select class="form-select" name="tipo_red_bases" id="tipo_red_bases" required>
+                                        <option @if($dato->tipo_red == 'local') {{'selected'}} @endif value="local">Local</option>
+                                        <option @if($dato->tipo_red == 'publica') {{'selected'}} @endif value="publica">Pública</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm">
+                                <div class="input-group mb-3">
+                                    <label class="input-group-text" for="activo_bases">Activo <small class="small-color">(*)</small>:</label>
+                                    <select class="form-select" name="activo_bases" id="activo_bases" required>
+                                        <option @if($dato->activo == true) {{'selected'}} @endif value="true">Sí</option>
+                                        <option @if($dato->activo != true) {{'selected'}} @endif value="false">No</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer modal-body-color">
