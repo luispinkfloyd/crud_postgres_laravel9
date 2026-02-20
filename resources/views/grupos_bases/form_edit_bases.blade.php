@@ -29,10 +29,16 @@
                             </div>
                         </div>
                         <div class="row form-group">
-                            <div class="col-sm-3">
+                            <div class="col-sm">
                                 <div class="input-group mb-3">
                                     <span class="input-group-text" id="host_bases">Host <small class="small-color">(*)</small></span>
                                     <input type="text" class="form-control" aria-describedby="host_bases" id="host_bases" name="host_bases" value="{{$dato->host}}" required>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text" id="port_bases">Puerto <small class="small-color">(*)</small></span>
+                                    <input type="text" class="form-control" aria-describedby="port_bases" id="port_bases" name="port_bases" value="{{$dato->port}}" required>
                                 </div>
                             </div>
                             <div class="col-sm">
@@ -41,6 +47,8 @@
                                     <input type="text" class="form-control" aria-describedby="usuario_bases" id="usuario_bases" name="usuario_bases" value="{{$dato->usuario}}" required>
                                 </div>
                             </div>
+                        </div>
+                        <div class="row form-group">
                             <div class="col-sm">
                                 <div class="input-group mb-3">
                                     <span class="input-group-text" id="password_bases">Contraseña <small class="small-color">(*)</small></span>
@@ -56,7 +64,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-sm">
+                            <div class="col-sm-3">
                                 <div class="input-group mb-3">
                                     <label class="input-group-text" for="activo_bases">Activo <small class="small-color">(*)</small>:</label>
                                     <select class="form-select" name="activo_bases" id="activo_bases" required>

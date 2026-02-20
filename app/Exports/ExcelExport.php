@@ -23,63 +23,12 @@ use ReflectionClass;
 
 class ExcelExport implements FromView , ShouldAutoSize , WithEvents
 {
+	use \App\Traits\conexionTrait;
+
     public function __construct($request)
     {
         $this->request = $request;
     }
-
-	public function conexion($request, $database = NULL, $schema = NULL, $charset_def = NULL)
-	{
-		//Guardo el host, usuario y contraseña definidos en el form_host para hacer la conexión, en variables de sesión; mientras dure la sesión y no se modifiquen, la conexión siempre se va a realizar con estos valores (agregado el if para los casos de querer volver a seleccionar la database sin salirse de la conexión)
-
-		
-		if($request->session()->get('db_usuario') === NULL && $request->session()->get('db_host') === NULL){
-
-			$base = Base::find($request->db_host);
-
-			$request->session()->put('db_host',$base->host);
-
-			$request->session()->put('db_usuario',$base->usuario);
-
-			$request->session()->put('db_contrasenia',$base->password);
-
-		}
-
-		//Traigo los valores de la conexión para manejarlos como variantes directamente (menos la contraseña)
-		$db_usuario = $request->session()->get('db_usuario');
-
-		$db_host = $request->session()->get('db_host');
-
-		//Si no se pasan los valores de schema database o charset_def los seteo a valores por defecto
-		if(!isset($database)){
-			$database = 'postgres';
-		}
-
-		if(!isset($schema)){
-			$schema = 'public';
-		}
-
-		if(!isset($charset_def)){
-			$charset_def = 'utf8';
-		}
-
-		//Genero el modelo de la conexión pgsql_variable con los valores definidos, y realizo la conexión
-		Config::set('database.connections.pgsql_variable', array(
-			'driver'    => 'pgsql',
-			'host'      => $db_host,
-			'database'  => $database,
-			'username'  => $db_usuario,
-			'password'  => $request->session()->get('db_contrasenia'),
-			'charset'   => $charset_def,
-			'collation' => 'utf8_unicode_ci',
-			'prefix'    => '',
-			'schema'    => $schema,
-		));
-
-		$conexion = DB::connection('pgsql_variable');
-
-		return $conexion;
-	}
     
 	public function view(): View
     {
@@ -95,6 +44,8 @@ class ExcelExport implements FromView , ShouldAutoSize , WithEvents
 		$db_usuario = $this->request->session()->get('db_usuario');
 
 		$db_host = $this->request->session()->get('db_host');
+
+		$db_port = $this->request->session()->get('db_port');
 
 		$charset_def = $this->request->session()->get('charset_def');
 

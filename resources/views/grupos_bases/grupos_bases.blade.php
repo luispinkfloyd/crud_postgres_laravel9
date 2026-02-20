@@ -42,6 +42,7 @@
                 <th scope="col" class="text-center">ID</th>
                 <th scope="col" class="text-center">Nombre</th>
                 <th scope="col" class="text-center">IP (host)</th>
+                <th scope="col" class="text-center">Puerto</th>
                 <th scope="col" class="text-center">Usuario</th>
                 <th scope="col" class="text-center">Contraseña</th>
                 <th scope="col" class="text-center">Red</th>
@@ -66,6 +67,7 @@
                         <th scope="row" class="text-center align-middle">{{$dato->id}}</th>
                         <td class="align-middle">{{$dato->servidor}}</td>
                         <td class="align-middle">{{$dato->host}}</td>
+                        <td class="text-center align-middle">{{$dato->port}}</td>
                         <td class="text-center align-middle">{{$dato->usuario}}</td>
                         <td class="align-middle">{{$dato->password}}</td>
                         <td class="text-center align-middle">

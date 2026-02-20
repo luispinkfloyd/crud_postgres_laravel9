@@ -66,8 +66,8 @@ class HostRegisterController extends Controller
         $perPage = 10;
         $datos = $datos->paginate($perPage);
 
-        if(isset($request->host) && isset($request->usuario) && isset($request->contrasenia)){
-            $conectado = $this->test_conexion($request->host, $request->usuario, $request->contrasenia);
+        if(isset($request->host) && isset($request->port) && isset($request->usuario) && isset($request->contrasenia)){
+            $conectado = $this->test_conexion($request->host, $request->port, $request->usuario, $request->contrasenia);
         }
         
         return view('grupos_bases.grupos_bases', [  'grupos' => $grupos,
@@ -108,6 +108,7 @@ class HostRegisterController extends Controller
             $base = new Base;
             $base->servidor = $request->servidor_bases;
 			$base->host = $request->host_bases;
+            $base->port = $request->port_bases;
             $base->usuario = $request->usuario_bases;
             $base->password = $request->password_bases;
 			$base->grupo = $request->grupo_bases;
@@ -139,6 +140,7 @@ class HostRegisterController extends Controller
             $base = Base::findOrFail($id);
             $base->servidor = $request->servidor_bases;
             $base->host = $request->host_bases;
+            $base->port = $request->port_bases;
             $base->usuario = $request->usuario_bases;
             $base->password = $request->password_bases;
             $base->grupo = $request->grupo_bases;

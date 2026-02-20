@@ -14,6 +14,7 @@ class Base extends Model
     protected $fillable = [
          'servidor'
         ,'host'
+        ,'port'
         ,'usuario'
         ,'password'
         ,'grupo'

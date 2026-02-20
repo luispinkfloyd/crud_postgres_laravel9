@@ -23,9 +23,11 @@ class AjaxController extends Controller
         $charset_def = $request->session()->get('charset_def');
 		$database = Cache::get('database'.$this->id());
 		$schema = Cache::get('schema'.$this->id());
+		$db_port = Cache::get('db_port'.$this->id());
 		Config::set('database.connections.pgsql_variable', array(
                     'driver'    => 'pgsql',
                     'host'      => $db_host,
+                    'port'      => $db_port,
                     'database'  => $database,
                     'username'  => $db_usuario,
                     'password'  => $request->session()->get('db_contrasenia'),

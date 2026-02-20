@@ -17,6 +17,7 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->string('servidor');
             $table->string('host');
+            $table->string('port');
             $table->string('usuario');
             $table->string('password');
             $table->string('tipo_red')->nullable();

@@ -23,12 +23,18 @@ trait conexionTrait
 
 			$request->session()->put('db_contrasenia',$base->password);
 
+			$request->session()->put('db_port',$base->puerto);
+
 		}
+
+
 
 		//Traigo los valores de la conexión para manejarlos como variantes directamente (menos la contraseña)
 		$db_usuario = $request->session()->get('db_usuario');
 
 		$db_host = $request->session()->get('db_host');
+
+		$db_port = $request->session()->get('db_port');
 
 		//Si no se pasan los valores de schema database o charset_def los seteo a valores por defecto
 		if(!isset($database)){
@@ -43,10 +49,15 @@ trait conexionTrait
 			$charset_def = 'utf8';
 		}
 
+		if(!isset($db_port)){
+			$db_port = '5432';
+		}
+
 		//Genero el modelo de la conexión pgsql_variable con los valores definidos, y realizo la conexión
 		Config::set('database.connections.pgsql_variable', array(
 			'driver'    => 'pgsql',
 			'host'      => $db_host,
+			'port' 		=> $db_port,
 			'database'  => $database,
 			'username'  => $db_usuario,
 			'password'  => $request->session()->get('db_contrasenia'),
@@ -61,13 +72,14 @@ trait conexionTrait
 		return $conexion;
 	}
 
-	public function test_conexion($db_host = 'localhost', $db_usuario = 'postgres', $db_contrasenia = NULL, $database = 'postgres', $schema = 'public', $charset_def = 'utf8')
+	public function test_conexion($db_host = 'localhost', $db_port = '5432', $db_usuario = 'postgres', $db_contrasenia = NULL, $database = 'postgres', $schema = 'public', $charset_def = 'utf8')
 	{
 		if($db_contrasenia){
 				
 			Config::set('database.connections.test_conexion', array(
 				'driver'    => 'pgsql',
 				'host'      => $db_host,
+				'port' 		=> $db_port,
 				'database'  => $database,
 				'username'  => $db_usuario,
 				'password'  => $db_contrasenia,
