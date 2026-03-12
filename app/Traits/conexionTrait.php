@@ -23,7 +23,7 @@ trait conexionTrait
 
 			$request->session()->put('db_contrasenia',$base->password);
 
-			$request->session()->put('db_port',$base->puerto);
+			$request->session()->put('db_port',$base->port);
 
 		}
 
