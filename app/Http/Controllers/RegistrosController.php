@@ -197,7 +197,7 @@ class RegistrosController extends Controller
                                             WHERE tc.constraint_type = 'PRIMARY KEY'
                                             AND kcu.table_schema = col.table_schema
                                             AND kcu.table_name = col.table_name
-                                            AND kcu.column_name = col.column_name)
+                                            AND kcu.column_name = col.column_name LIMIT 1)
                                             THEN true ELSE false END as primary_key,
                                             CASE WHEN 
                                             (SELECT true FROM information_schema.table_constraints AS tc
@@ -207,7 +207,7 @@ class RegistrosController extends Controller
                                             WHERE tc.constraint_type = 'FOREIGN KEY'
                                             AND kcu.table_schema = col.table_schema
                                             AND kcu.table_name = col.table_name
-                                            AND kcu.column_name = col.column_name)
+                                            AND kcu.column_name = col.column_name LIMIT 1)
                                             THEN true ELSE false END as foreign_key,
                                             CASE WHEN col.column_default ILIKE 'nextval%regclass)' THEN true ELSE false END as default_serial
 								FROM        INFORMATION_SCHEMA.columns col
